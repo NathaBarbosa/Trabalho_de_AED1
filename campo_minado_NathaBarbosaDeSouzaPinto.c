@@ -1,0 +1,232 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#define string_MAX 10
+
+int seleciona_dificuldade(char *dificuldade) {
+    int config = 0;
+    int i = 0;
+    char facil[5] = {'f', 'a', 'c', 'i', 'l'};
+    char medio[5] = {'m', 'e', 'd', 'i', 'o'};
+    char dificil[7] = {'d', 'i', 'f', 'i', 'c', 'i', 'l'};
+    
+    while (dificuldade[i] != '\0') {
+        if (dificuldade[i] == facil[i]) {
+            config = 1;
+        } else if (dificuldade[i] == medio[i]) {
+            config = 2;
+        } else if (dificuldade[i] == dificil[i]) {
+            config = 3;
+        } else {
+            config = 0;
+        }
+        i++;
+    }
+    return config; // Retorna um número correspondente à escolha do usuário ou zero {0} se não for uma entrada válida
+} 
+
+int seleciona_Matriz_Back(int config) {
+    int n = 0;
+    if (config == 1) {
+        n = 10; // Dificuldade fácil
+    } else if (config == 2) {
+        n = 20; // Dificuldade média
+    } else if (config == 3) {
+        n = 30; // Dificuldade difícil
+    } else {
+        n = 0; // Entrada inválida
+    }
+    return n + 2; // Retorna a quantidade de linhas/colunas (adicionando 2 para evitar bordas)
+}
+
+int numero_de_Bombas(int config) {
+    int bombas = 0;
+    if (config == 1) {
+        bombas = 3;
+    } else if (config == 2) {
+        bombas = 6;
+    } else if (config == 3) {
+        bombas = 9;
+    }
+    return bombas; 
+}
+
+int **constroi_Matriz_Back(int n, int bombas) {
+    srand(time(NULL));
+    int **matriz_back = (int **)malloc(n * sizeof(int*));
+    
+    for (int i = 0; i < n; i++) {
+        matriz_back[i] = (int *)malloc(n * sizeof(int));
+    }
+    if (matriz_back == NULL) {
+        printf("Memoria insuficiente(02)\n");
+        exit(1);
+    }
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            matriz_back[i][j] = 0;
+        }
+    }
+    for (int i = 0; i < bombas; i++) {
+        int x = 1 + rand() % (n - 2); // Sorteia de 1 até n-2 (evita as bordas)
+        int y = 1 + rand() % (n - 2); // Sorteia de 1 até n-2 (evita as bordas)
+        
+        if (matriz_back[x][y] == -1) {
+            i--; // Se já tem uma bomba nessa posição, sorteia outra.
+        } else {
+            matriz_back[x][y] = -1; // Coloca a bomba.
+        }
+    }
+    // adicionando +1 em todos os elementos perto do -1, caso não estejam nas bordas da matriz
+    for (int i = 1; i < n - 1; i++) {
+        for (int j = 1; j < n - 1; j++) {
+            if (matriz_back[i][j] == -1) {
+                if (matriz_back[i-1][j] != -1) {
+                    matriz_back[i-1][j] += 1;
+                }
+                if (matriz_back[i+1][j] != -1) {
+                    matriz_back[i+1][j] += 1;
+                }
+                if (matriz_back[i][j-1] != -1) {
+                    matriz_back[i][j-1] += 1;
+                }
+                if (matriz_back[i][j+1] != -1) {
+                    matriz_back[i][j+1] += 1;
+                }
+                if (matriz_back[i-1][j-1] != -1) {
+                    matriz_back[i-1][j-1] += 1;
+                }
+                if (matriz_back[i-1][j+1] != -1) {
+                    matriz_back[i-1][j+1] += 1;
+                }
+                if (matriz_back[i+1][j-1] != -1) {
+                    matriz_back[i+1][j-1] += 1;
+                }
+                if (matriz_back[i+1][j+1] != -1) {
+                    matriz_back[i+1][j+1] += 1;
+                }
+            }
+        }
+    } 
+    return matriz_back;
+}
+
+char **matriz_front(int n) {
+    char **mat_front = (char **)malloc(n * sizeof(char*));
+    if (mat_front == NULL) {
+        printf("Memoria insuficiente(03)\n");
+        exit(1);
+    }
+
+    for (int i = 0; i < n; i++) {
+        mat_front[i] = (char *)malloc(n * sizeof(char));
+        if (mat_front[i] == NULL) {
+            printf("Memoria insuficiente(03)\n");
+            exit(1);
+        }
+    }
+    
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            mat_front[i][j] = 'x';
+        }
+    }
+    return mat_front;
+}
+
+void imprime_front(int n, char** mat_front) {
+    for (int i = 1; i < n - 1; i++) {
+        for (int j = 1; j < n - 1; j++) {
+            printf("%c ", mat_front[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void imprime_gameOver(int n, int** mat_back) {
+    for (int i = 1; i < n - 1; i++) {
+        for (int j = 1; j < n - 1; j++) {
+            printf("%d  ", mat_back[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void libera_matriz_back(int n, int** mat_back) {
+    for (int i = 1; i < n - 1; i++) {
+        free(mat_back[i]);
+    }
+    free(mat_back);
+}
+
+void libera_matriz_front(int n, char** mat_front) {
+    for (int i = 1; i < n - 1; i++) {
+        free(mat_front[i]);
+    }
+    free(mat_front);
+}
+
+int main(void) {
+    char *dificuldade = malloc(sizeof *dificuldade * (string_MAX));
+    if (dificuldade == NULL) {
+        printf("Memoria Insuficiente(01)\n");
+        exit(1);
+    }
+    printf("Por favor, escolha entre facil, medio ou dificil: \n");
+    scanf("%s", dificuldade);
+
+    int x, y;
+    int flag = 1;
+    int contador = 0;
+    int conf = seleciona_dificuldade(dificuldade);
+    if (conf == 0) {
+        do {
+            printf("Por favor, informe uma dificuldade valida\n");
+            scanf("%s", dificuldade);
+            conf = seleciona_dificuldade(dificuldade);
+        } while (conf == 0);
+    }
+
+    int bombas = numero_de_Bombas(conf);
+    int n = seleciona_Matriz_Back(conf);
+    int** mat = constroi_Matriz_Back(n, bombas);
+    char** mat_front = matriz_front(n);
+
+    while (flag) {
+        printf("Agora digite as coordenadas x y de 1 a %d para escolher uma posicao: \n", (n - 2));
+        scanf("%d,%d", &x, &y);
+
+        // Verifica se as coordenadas estão fora do escopo
+        while (((x < 1) || (y < 1)) || ((x > (n - 2)) || (y > (n - 2)))) {
+            printf("A entrada tem que ser um numero dentro do escopo!\n");
+            printf("Digite novamente as coordenadas x,y de 1 a %d para escolher uma posicao: \n", (n - 2));
+            scanf("%d,%d", &x, &y);
+        }
+
+        // Verifica se a coordenada já foi escolhida antes
+        if (mat_front[x][y] != 'x') {
+            printf("Boa tentativa, informe uma entrada ainda nao usada\n");
+        } 
+        // Caso as coordenadas sejam válidas e não usadas, processa o jogo
+        else {
+            if (mat[x][y] == -1) {
+                printf("game over\n");
+                imprime_gameOver(n, mat);
+                flag = 0;
+            } else {
+                mat_front[x][y] = mat[x][y] + '0';
+                imprime_front(n, mat_front);
+                contador++;
+                if (contador == ((n - 2) * (n - 2)) - bombas) {
+                    printf("parabens, vc eh fera\n");
+                    imprime_gameOver(n, mat);
+                    flag = 0;
+                }
+            }
+        }
+    }
+    free(dificuldade);
+    libera_matriz_back(n, mat);
+    libera_matriz_front(n, mat_front);
+    return 0;
+}
