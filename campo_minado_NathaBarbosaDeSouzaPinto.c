@@ -176,18 +176,16 @@ int main(void) {
         exit(1); //escolhi fazer manualmente para praticar 
     }
 
-    printf("Por favor, escolha entre facil, medio ou dificil: \n");
+    printf("Por favor, escolha uma dificuldade escrevendo: facil, medio ou dificil \n");
     scanf("%s", dificuldade); // lê a dificuldade que o usuario escolher para jogar
-    system("clear");
     int x, y;
     int flag = 1;
     int contador = 0;
     int conf = seleciona_dificuldade(dificuldade);
     if (conf == 0) { //se o usuario digitar qualquer string que nâo seja "facil", "medio" ou "dificil", pede para digitar novamente
         do {
-            printf("Por favor, informe uma dificuldade valida: ""facil"", ""medio"" ou ""dificil""\n");
+            printf("Por favor, escreva uma dificuldade valida: ""facil"", ""medio"" ou ""dificil""\n");
             scanf("%s", dificuldade);
-            system("clear");
             conf = seleciona_dificuldade(dificuldade);
         } while (conf == 0); // nâo sai do loop ate que o usuario digite uma entrada valida
     }
@@ -198,16 +196,14 @@ int main(void) {
     char** mat_front = matriz_front(n);
 
     while (flag) {
-        printf("Agora digite as coordenadas x,y de 1 a %d para escolher uma posicao: \n", (n - 2));
+        printf("Agora digite as coordenadas ""x,y"" de 1 a %d para escolher uma posicao: \n", (n - 2));
         scanf("%d,%d", &x, &y); // lê as coordenadas
-        system("clear");
 
         // Verifica se as coordenadas estão fora do escopo
         while (((x < 1) || (y < 1)) || ((x > (n - 2)) || (y > (n - 2)))) {
             printf("A entrada tem que ser um numero dentro do escopo!\n");
             printf("Digite novamente as coordenadas x,y de 1 a %d para escolher uma posicao: \n", (n - 2));
             scanf("%d,%d", &x, &y);
-            system("clear");
         }
 
         // Verifica se a coordenada já foi escolhida antes
