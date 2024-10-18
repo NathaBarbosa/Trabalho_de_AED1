@@ -197,7 +197,7 @@ int main(void) {
     char** mat_front = matriz_front(n);
 
     while (flag) {
-        printf("Agora digite as coordenadas x y de 1 a %d para escolher uma posicao: \n", (n - 2));
+        printf("Agora digite as coordenadas x,y de 1 a %d para escolher uma posicao: \n", (n - 2));
         scanf("%d,%d", &x, &y); // lê as coordenadas
 
         // Verifica se as coordenadas estão fora do escopo
@@ -233,4 +233,7 @@ int main(void) {
     libera_matriz_back(n, mat);
     libera_matriz_front(n, mat_front);
     return 0;
+
+
+    
 }
