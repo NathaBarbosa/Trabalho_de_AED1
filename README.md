@@ -1,11 +1,11 @@
 #Campo Minado em C
-Este projeto é um jogo de Campo Minado desenvolvido em linguagem C. O jogador deve escolher uma dificuldade e tentar descobrir todas as posições seguras em uma matriz, enquanto evita bombas escondidas.
+-Este projeto é um jogo de Campo Minado desenvolvido em linguagem C. O jogador deve escolher uma dificuldade e tentar descobrir todas as posições seguras em uma matriz, enquanto evita bombas escondidas.
 
 #Como Funciona
-O jogo gera um campo minado com diferentes níveis de dificuldade (fácil, médio ou difícil). O jogador insere coordenadas para "abrir" posições no campo. Se a posição contém uma bomba, o jogo acaba. Se todas as posições seguras forem descobertas, o jogador vence.
+-O jogo gera um campo minado com diferentes níveis de dificuldade (fácil, médio ou difícil). O jogador insere coordenadas para "abrir" posições no campo. Se a posição contém uma bomba, o jogo acaba. Se todas as posições seguras forem descobertas, o jogador vence.
 
 #1. Escolha da Dificuldade
-Ao iniciar o programa, você será solicitado a escolher um dos três níveis de dificuldade:
+-Ao iniciar o programa, você será solicitado a escolher um dos três níveis de dificuldade:
 
 fácil: Gera uma matriz 10x10 com 3 bombas.
 médio: Gera uma matriz 20x20 com 6 bombas.
