@@ -20,7 +20,7 @@ int seleciona_dificuldade(char *dificuldade) {
         } else {
             config = 0;
         }
-        i++;
+        i++; 
     }
     return config; // Retorna um número correspondente à escolha do usuário ou zero {0} se não for uma entrada válida
 } 
@@ -48,11 +48,12 @@ int numero_de_Bombas(int config) {
     } else if (config == 3) {
         bombas = 9;
     }
-    return bombas; 
+    return bombas; // essa função atribui o numero de bombas de acordo com a dificuldade
 }
 
 int **constroi_Matriz_Back(int n, int bombas) {
-    srand(time(NULL));
+
+    srand(time(NULL)); //gerando numero aleatorios com a seed fornecida pela biblioteca <time.h>
     int **matriz_back = (int **)malloc(n * sizeof(int*));
     
     for (int i = 0; i < n; i++) {
@@ -64,7 +65,7 @@ int **constroi_Matriz_Back(int n, int bombas) {
     }
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            matriz_back[i][j] = 0;
+            matriz_back[i][j] = 0; // inicializa com zeros a matriz
         }
     }
     for (int i = 0; i < bombas; i++) {
@@ -79,36 +80,37 @@ int **constroi_Matriz_Back(int n, int bombas) {
     }
     // adicionando +1 em todos os elementos perto do -1, caso não estejam nas bordas da matriz
     for (int i = 1; i < n - 1; i++) {
-        for (int j = 1; j < n - 1; j++) {
-            if (matriz_back[i][j] == -1) {
-                if (matriz_back[i-1][j] != -1) {
-                    matriz_back[i-1][j] += 1;
-                }
-                if (matriz_back[i+1][j] != -1) {
-                    matriz_back[i+1][j] += 1;
-                }
-                if (matriz_back[i][j-1] != -1) {
-                    matriz_back[i][j-1] += 1;
-                }
-                if (matriz_back[i][j+1] != -1) {
-                    matriz_back[i][j+1] += 1;
-                }
-                if (matriz_back[i-1][j-1] != -1) {
-                    matriz_back[i-1][j-1] += 1;
-                }
-                if (matriz_back[i-1][j+1] != -1) {
-                    matriz_back[i-1][j+1] += 1;
-                }
-                if (matriz_back[i+1][j-1] != -1) {
-                    matriz_back[i+1][j-1] += 1;
-                }
-                if (matriz_back[i+1][j+1] != -1) {
-                    matriz_back[i+1][j+1] += 1;
-                }
+    for (int j = 1; j < n - 1; j++) {
+        if (matriz_back[i][j] == -1) {  // Verifica se a coordenada atual é uam bomba (-1)
+            // Verifica e incrementa as coordenadas ao redor, se não forem bombas (-1)
+            if (matriz_back[i-1][j] != -1) {  // coordenadas acima
+                matriz_back[i-1][j] += 1;
+            }
+            if (matriz_back[i+1][j] != -1) {  // coordenadas abaixo
+                matriz_back[i+1][j] += 1;
+            }
+            if (matriz_back[i][j-1] != -1) {  // coordenadas à esquerda
+                matriz_back[i][j-1] += 1;
+            }
+            if (matriz_back[i][j+1] != -1) {  // coordenadas à direita
+                matriz_back[i][j+1] += 1;
+            }
+            if (matriz_back[i-1][j-1] != -1) {  // Diagonal superior esquerda
+                matriz_back[i-1][j-1] += 1;
+            }
+            if (matriz_back[i-1][j+1] != -1) {  // Diagonal superior direita
+                matriz_back[i-1][j+1] += 1;
+            }
+            if (matriz_back[i+1][j-1] != -1) {  // Diagonal inferior esquerda
+                matriz_back[i+1][j-1] += 1;
+            }
+            if (matriz_back[i+1][j+1] != -1) {  // Diagonal inferior direita
+                matriz_back[i+1][j+1] += 1;
             }
         }
     } 
-    return matriz_back;
+}
+    return matriz_back; // O motivo para evitar as bordas é para facilitar a lógica de verificaçao
 }
 
 char **matriz_front(int n) {
@@ -139,7 +141,8 @@ void imprime_front(int n, char** mat_front) {
         for (int j = 1; j < n - 1; j++) {
             printf("%c ", mat_front[i][j]);
         }
-        printf("\n");
+        printf("\n"); // como construi uma matriz com casas a mais, imprimo somente
+                        //o necessario e fujo de qualquer erro por acessar algo fora da matriz
     }
 }
 
@@ -148,21 +151,21 @@ void imprime_gameOver(int n, int** mat_back) {
         for (int j = 1; j < n - 1; j++) {
             printf("%d  ", mat_back[i][j]);
         }
-        printf("\n");
+        printf("\n"); //imprime a matriz_back sem os 'x' 
     }
 }
 
 void libera_matriz_back(int n, int** mat_back) {
     for (int i = 1; i < n - 1; i++) {
         free(mat_back[i]);
-    }
+    }       //função que libera a alocção dinâmica de memoria da matriz_back
     free(mat_back);
 }
 
 void libera_matriz_front(int n, char** mat_front) {
     for (int i = 1; i < n - 1; i++) {
         free(mat_front[i]);
-    }
+    } //função que libera a alocção dinâmica de memoria da matriz_front
     free(mat_front);
 }
 
@@ -172,19 +175,20 @@ int main(void) {
         printf("Memoria Insuficiente(01)\n");
         exit(1);
     }
+
     printf("Por favor, escolha entre facil, medio ou dificil: \n");
-    scanf("%s", dificuldade);
+    scanf("%s", dificuldade); // lê a dificuldade que o usuario escolher para jogar
 
     int x, y;
     int flag = 1;
     int contador = 0;
     int conf = seleciona_dificuldade(dificuldade);
-    if (conf == 0) {
+    if (conf == 0) { //se o usuario digitar qualquer string que nâo seja "facil", "medio" ou "dificil", pede para digitar novamente
         do {
-            printf("Por favor, informe uma dificuldade valida\n");
+            printf("Por favor, informe uma dificuldade valida: ""facil"", ""medio"" ou ""dificil""\n");
             scanf("%s", dificuldade);
             conf = seleciona_dificuldade(dificuldade);
-        } while (conf == 0);
+        } while (conf == 0); // nâo sai do loop ate que o usuario digite uma entrada valida
     }
 
     int bombas = numero_de_Bombas(conf);
@@ -194,7 +198,7 @@ int main(void) {
 
     while (flag) {
         printf("Agora digite as coordenadas x y de 1 a %d para escolher uma posicao: \n", (n - 2));
-        scanf("%d,%d", &x, &y);
+        scanf("%d,%d", &x, &y); // lê as coordenadas
 
         // Verifica se as coordenadas estão fora do escopo
         while (((x < 1) || (y < 1)) || ((x > (n - 2)) || (y > (n - 2)))) {
@@ -209,15 +213,15 @@ int main(void) {
         } 
         // Caso as coordenadas sejam válidas e não usadas, processa o jogo
         else {
-            if (mat[x][y] == -1) {
-                printf("game over\n");
+            if (mat[x][y] == -1) { //se a coordenada for uma bomba, imprime game over e mostra  matriz_back
+                printf("game over\n"); 
                 imprime_gameOver(n, mat);
                 flag = 0;
-            } else {
+            } else { // se não, coloca o elemento da matriz_back na matriz_front
                 mat_front[x][y] = mat[x][y] + '0';
                 imprime_front(n, mat_front);
-                contador++;
-                if (contador == ((n - 2) * (n - 2)) - bombas) {
+                contador++; //adiciona +1 no contador caso essa operação seja feita
+                if (contador == ((n - 2) * (n - 2)) - bombas) { //se um determinado numero de jogadas forem feitas com sucesso, encerra o game
                     printf("parabens, vc eh fera\n");
                     imprime_gameOver(n, mat);
                     flag = 0;
