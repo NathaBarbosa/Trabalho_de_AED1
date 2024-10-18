@@ -187,7 +187,6 @@ int main(void) {
         do {
             printf("Por favor, informe uma dificuldade valida: ""facil"", ""medio"" ou ""dificil""\n");
             scanf("%s", dificuldade);
-            
             system("clear");
             conf = seleciona_dificuldade(dificuldade);
         } while (conf == 0); // nâo sai do loop ate que o usuario digite uma entrada valida
@@ -201,7 +200,6 @@ int main(void) {
     while (flag) {
         printf("Agora digite as coordenadas x,y de 1 a %d para escolher uma posicao: \n", (n - 2));
         scanf("%d,%d", &x, &y); // lê as coordenadas
-        
         system("clear");
 
         // Verifica se as coordenadas estão fora do escopo
@@ -209,7 +207,6 @@ int main(void) {
             printf("A entrada tem que ser um numero dentro do escopo!\n");
             printf("Digite novamente as coordenadas x,y de 1 a %d para escolher uma posicao: \n", (n - 2));
             scanf("%d,%d", &x, &y);
-            
             system("clear");
         }
 
