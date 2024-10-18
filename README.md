@@ -34,7 +34,6 @@ Se o jogador inserir uma coordenada inválida (fora dos limites do campo) ou uma
 # Instruções de Uso
 # Requisitos
 - Compilador C (ex: GCC).
-- Sistema Operacional: Linux ou qualquer outro compatível com o comando clear (o código utiliza system("clear") para limpar o terminal).
 - Como Compilar
 - Baixe ou clone o repositório com o código-fonte.
 
