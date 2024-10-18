@@ -47,9 +47,9 @@ Se o jogador inserir uma coordenada inválida (fora dos limites do campo) ou uma
 
 # Como Jogar:
 
-- Escolha a dificuldade: fácil, médio, ou difícil.
+- Escolha a dificuldade: facil, medio, ou dificil. obs: sem acentuação
 - O jogo exibirá o campo de jogo como uma matriz de 'x'.
-- Insira as coordenadas (x, y) para descobrir posições seguras no campo.
+- Insira as coordenadas (x, y) para descobrir posições seguras no campo. obs: com a virgula
 - Exemplo de entrada: 3,4
 - O jogo revelará o conteúdo da posição escolhida:
 - Se for uma bomba (-1), o jogo terminará com Game Over.
