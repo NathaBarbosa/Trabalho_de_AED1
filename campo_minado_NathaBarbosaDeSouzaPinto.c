@@ -156,14 +156,14 @@ void imprime_gameOver(int n, int** mat_back) {
 }
 
 void libera_matriz_back(int n, int** mat_back) {
-    for (int i = 1; i < n - 1; i++) {
+    for (int i = 1; i < n ; i++) {
         free(mat_back[i]);
     }       //função que libera a alocção dinâmica de memoria da matriz_back
     free(mat_back);
 }
 
 void libera_matriz_front(int n, char** mat_front) {
-    for (int i = 1; i < n - 1; i++) {
+    for (int i = 1; i < n ; i++) {
         free(mat_front[i]);
     } //função que libera a alocção dinâmica de memoria da matriz_front
     free(mat_front);
@@ -173,12 +173,12 @@ int main(void) {
     char *dificuldade = malloc(sizeof *dificuldade * (string_MAX));
     if (dificuldade == NULL) {
         printf("Memoria Insuficiente(01)\n");
-        exit(1);
+        exit(1); //escolhi fazer manualmente para praticar 
     }
 
     printf("Por favor, escolha entre facil, medio ou dificil: \n");
     scanf("%s", dificuldade); // lê a dificuldade que o usuario escolher para jogar
-
+    system("clear");
     int x, y;
     int flag = 1;
     int contador = 0;
@@ -187,6 +187,8 @@ int main(void) {
         do {
             printf("Por favor, informe uma dificuldade valida: ""facil"", ""medio"" ou ""dificil""\n");
             scanf("%s", dificuldade);
+            
+            system("clear");
             conf = seleciona_dificuldade(dificuldade);
         } while (conf == 0); // nâo sai do loop ate que o usuario digite uma entrada valida
     }
@@ -199,12 +201,16 @@ int main(void) {
     while (flag) {
         printf("Agora digite as coordenadas x,y de 1 a %d para escolher uma posicao: \n", (n - 2));
         scanf("%d,%d", &x, &y); // lê as coordenadas
+        
+        system("clear");
 
         // Verifica se as coordenadas estão fora do escopo
         while (((x < 1) || (y < 1)) || ((x > (n - 2)) || (y > (n - 2)))) {
             printf("A entrada tem que ser um numero dentro do escopo!\n");
             printf("Digite novamente as coordenadas x,y de 1 a %d para escolher uma posicao: \n", (n - 2));
             scanf("%d,%d", &x, &y);
+            
+            system("clear");
         }
 
         // Verifica se a coordenada já foi escolhida antes
