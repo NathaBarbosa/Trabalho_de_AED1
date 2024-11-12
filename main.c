@@ -36,7 +36,7 @@ int main(void) {
 
         // Verifica se a coordenada já foi escolhida antes
         if (mat_front[x][y] != 'x') {
-            printf("Boa tentativa, informe uma entrada ainda nao usada\n");
+            printf("Boa tentativa, informe uma entrada ainda nao usada ou ainda nao revelada\n");
 
         } else{
         
@@ -59,7 +59,7 @@ int main(void) {
             escrever_log(logfile,mat_front, n, x, y);
             contador++;
 
-            if (contador == ((n - 2) * (n - 2)) - bombas) {
+            if (ganhouOuPerdeu(mat_front, bombas,n)) {
                 printf("Parabéns, você é fera!\n");
                 imprime_gameOver(n, mat);
                 escrever_log(logfile,mat_front, n, x, y);
