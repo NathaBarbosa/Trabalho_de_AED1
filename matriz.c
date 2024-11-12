@@ -215,8 +215,6 @@ void escrever_log(FILE *logfile, char **mat_front, int n, int x, int y) {
         fprintf(logfile, "\n");
     }
 
-    // Registra as coordenadas escolhidas
-    fprintf(logfile, "Jogador escolheu as coordenadas: (%d, %d)\n", x, y);
 }
 void registrar_fim_jogo(FILE *logfile, int ganhou) {
     time_t now;
