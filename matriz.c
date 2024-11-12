@@ -218,3 +218,23 @@ void escrever_log(FILE *logfile, char **mat_front, int n, int x, int y) {
     // Registra as coordenadas escolhidas
     fprintf(logfile, "Jogador escolheu as coordenadas: (%d, %d)\n", x, y);
 }
+void registrar_fim_jogo(FILE *logfile, int ganhou) {
+    time_t now;
+    struct tm *info;
+
+    // Obtemos a hora atual
+    time(&now);
+    info = localtime(&now);
+
+    // Escreve a data e hora no log
+    fprintf(logfile, "Data e Hora de término: %s", asctime(info));  // asctime converte a data/hora para uma string legível
+
+    // Escreve a mensagem de vitória ou derrota
+    if (ganhou) {
+        fprintf(logfile, "Você ganhou o jogo! Parabéns!\n");
+    } else {
+        fprintf(logfile, "Você perdeu o jogo. Tente novamente.\n");
+    }
+
+    fprintf(logfile, "\n");  // Linha em branco para separar entradas no log
+}
