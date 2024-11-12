@@ -8,12 +8,12 @@ int seleciona_dificuldade() {
     printf("Escolha o nivel de dificuldade:\n1 - Facil (10x10, 15 minas)\n2 - Medio (20x20, 60 minas)\n3 - Dificil (30x30, 135 minas)\n");
     scanf("%d", &config);
 
-    // Verifica entrada inválida
-    while(config != 1 && config != 2 && config != 3) {
-        printf("Opcao invalida. Escolha entre 1, 2 ou 3.\n");
-        printf("Escolha o nivel de dificuldade:\n");
-        scanf("%d", &config);
+    if(config != 1 && config != 2 && config != 3){
+        config = 0;
     }
+
+    // Verifica entrada inválida
+   
     return config;
 }
 
@@ -217,21 +217,21 @@ void escrever_log(FILE *logfile, char **mat_front, int n, int x, int y) {
 
 }
 void registrar_fim_jogo(FILE *logfile, int ganhou) {
-    time_t now;
-    struct tm *info;
+    time_t agora;
+    struct tm *dataHora;
+    time(&agora);
+    dataHora = localtime(&agora);
 
-    // Obtemos a hora atual
-    time(&now);
-    info = localtime(&now);
-
-    // Escreve a data e hora no log
-    fprintf(logfile, "Data e Hora de término: %s", asctime(info));  // asctime converte a data/hora para uma string legível
+    // Escrever no arquivo a data e hora de início do jogo
+    fprintf(logfile, "Fim do jogo: %02d/%02d/%04d %02d:%02d:%02d\n", 
+            dataHora->tm_mday, dataHora->tm_mon + 1, dataHora->tm_year + 1900,
+            dataHora->tm_hour, dataHora->tm_min, dataHora->tm_sec);
 
     // Escreve a mensagem de vitória ou derrota
     if (ganhou) {
-        fprintf(logfile, "Você ganhou o jogo! Parabéns!\n");
+        fprintf(logfile, "O jogador ganhou o jogo!\n");
     } else {
-        fprintf(logfile, "Você perdeu o jogo. Tente novamente.\n");
+        fprintf(logfile, "O jogador perdeu o jogo, que pena!\n");
     }
 
     fprintf(logfile, "\n");  // Linha em branco para separar entradas no log
