@@ -1,30 +1,21 @@
-// matriz.c
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include "matriz.h"
 
-int seleciona_dificuldade(char *dificuldade) {
-    int config = 0;
-    int i = 0;
-    char facil[5] = {'f', 'a', 'c', 'i', 'l'};
-    char medio[5] = {'m', 'e', 'd', 'i', 'o'};
-    char dificil[7] = {'d', 'i', 'f', 'i', 'c', 'i', 'l'};
+int seleciona_dificuldade() {
+    int config;
+    printf("Escolha o nivel de dificuldade:\n1 - Facil (10x10, 15 minas)\n2 - Medio (20x20, 60 minas)\n3 - Dificil (30x30, 135 minas)\n");
+    scanf("%d", &config);
 
-    while (dificuldade[i] != '\0') {
-        if (dificuldade[i] == facil[i]) {
-            config = 1;
-        } else if (dificuldade[i] == medio[i]) {
-            config = 2;
-        } else if (dificuldade[i] == dificil[i]) {
-            config = 3;
-        } else {
-            config = 0;
-        }
-        i++; 
+    // Verifica entrada inválida
+    while(config != 1 && config != 2 && config != 3) {
+        printf("Opcao invalida. Escolha entre 1, 2 ou 3.\n");
+        printf("Escolha o nivel de dificuldade:\n");
+        scanf("%d", &config);
     }
     return config;
-} 
+}
 
 int seleciona_Matriz_Back(int config) {
     int n = 0;
@@ -43,11 +34,11 @@ int seleciona_Matriz_Back(int config) {
 int numero_de_Bombas(int config) {
     int bombas = 0;
     if (config == 1) {
-        bombas = 3;
+        bombas = 15;
     } else if (config == 2) {
-        bombas = 6;
+        bombas = 60;
     } else if (config == 3) {
-        bombas = 9;
+        bombas = 135;
     }
     return bombas;
 }
@@ -55,19 +46,27 @@ int numero_de_Bombas(int config) {
 int **constroi_Matriz_Back(int n, int bombas) {
     srand(time(NULL)); 
     int **matriz_back = (int **)malloc(n * sizeof(int*));
-    
+    if (matriz_back == NULL) {
+        printf("Erro ao alocar memoria para a matriz de fundo\n");
+        exit(1); // Sai do programa se a alocação falhar
+    }
+
     for (int i = 0; i < n; i++) {
         matriz_back[i] = (int *)malloc(n * sizeof(int));
+        if (matriz_back[i] == NULL) {
+            printf("Erro ao alocar memoria para a linha %d da matriz de fundo\n", i);
+            exit(1); // Sai do programa se a alocação falhar
+        }
     }
-    if (matriz_back == NULL) {
-        printf("Memoria insuficiente(02)\n");
-        exit(1);
-    }
+
+    // Inicializa a matriz com 0s
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             matriz_back[i][j] = 0;
         }
     }
+
+    // Coloca as bombas na matriz
     for (int i = 0; i < bombas; i++) {
         int x = 1 + rand() % (n - 2); 
         int y = 1 + rand() % (n - 2); 
@@ -78,6 +77,8 @@ int **constroi_Matriz_Back(int n, int bombas) {
             matriz_back[x][y] = -1;
         }
     }
+
+    // Preenche os números ao redor das bombas
     for (int i = 1; i < n - 1; i++) {
         for (int j = 1; j < n - 1; j++) {
             if (matriz_back[i][j] == -1) { 
@@ -98,23 +99,25 @@ int **constroi_Matriz_Back(int n, int bombas) {
 char **matriz_front(int n) {
     char **mat_front = (char **)malloc(n * sizeof(char*));
     if (mat_front == NULL) {
-        printf("Memoria insuficiente(03)\n");
-        exit(1);
+        printf("Erro ao alocar memoria para a matriz da frente\n");
+        exit(1); // Sai do programa se a alocação falhar
     }
 
     for (int i = 0; i < n; i++) {
         mat_front[i] = (char *)malloc(n * sizeof(char));
         if (mat_front[i] == NULL) {
-            printf("Memoria insuficiente(03)\n");
-            exit(1);
+            printf("Erro ao alocar memoria para a linha %d da matriz da frente\n", i);
+            exit(1); // Sai do programa se a alocação falhar
         }
     }
     
+    // Inicializa a matriz da frente com 'x'
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
             mat_front[i][j] = 'x';
         }
     }
+
     return mat_front;
 }
 
@@ -130,22 +133,88 @@ void imprime_front(int n, char** mat_front) {
 void imprime_gameOver(int n, int** mat_back) {
     for (int i = 1; i < n - 1; i++) {
         for (int j = 1; j < n - 1; j++) {
-            printf("%d  ", mat_back[i][j]);
+            if(mat_back[i][j] == -1){
+              printf("%d  ", mat_back[i][j]);  
+            }else{
+              printf(" %d  ", mat_back[i][j]);
+            }
+            
         }
         printf("\n");
     }
 }
 
 void libera_matriz_back(int n, int** mat_back) {
-    for (int i = 1; i < n; i++) {
+    for (int i = 0; i < n; i++) {
         free(mat_back[i]);
     }
     free(mat_back);
 }
 
 void libera_matriz_front(int n, char** mat_front) {
-    for (int i = 1; i < n; i++) {
+    for (int i = 0; i < n; i++) {
         free(mat_front[i]);
     }
     free(mat_front);
+}
+
+void revelarZeros(int x, int y, int n, char** mat_front, int** mat) {
+    // Verifica se a posição está dentro dos limites da matriz
+    if (x < 1 || x >= n - 1 || y < 1 || y >= n - 1) return;
+    // Verifica se a célula já foi revelada
+    if (mat_front[x][y] != 'x') return;
+
+    // Revela a célula atual com o valor de bombas adjacentes
+    if (mat[x][y] == 0) {
+        mat_front[x][y] = '0';
+    } else {
+        mat_front[x][y] = mat[x][y] + '0';
+        return;
+    }
+
+    // Recursão para revelar as células adjacentes se o valor for zero
+    revelarZeros(x - 1, y, n, mat_front, mat); // Cima
+    revelarZeros(x + 1, y, n, mat_front, mat); // Baixo
+    revelarZeros(x, y - 1, n, mat_front, mat); // Esquerda
+    revelarZeros(x, y + 1, n, mat_front, mat); // Direita
+    revelarZeros(x - 1, y - 1, n, mat_front, mat); // Diagonal superior esquerda
+    revelarZeros(x - 1, y + 1, n, mat_front, mat); // Diagonal superior direita
+    revelarZeros(x + 1, y - 1, n, mat_front, mat); // Diagonal inferior esquerda
+    revelarZeros(x + 1, y + 1, n, mat_front, mat); // Diagonal inferior direita
+}
+
+FILE* abrir_log() {
+    FILE *logfile = fopen("log.txt", "a");
+    if (logfile == NULL) {
+        printf("Erro ao abrir o arquivo de log.\n");
+        exit(1); // Sai do programa se houver erro ao abrir o arquivo
+    }
+
+    // Obter a data e hora atual
+    time_t agora;
+    struct tm *dataHora;
+    time(&agora);
+    dataHora = localtime(&agora);
+
+    // Escrever no arquivo a data e hora de início do jogo
+    fprintf(logfile, "Início do jogo: %02d/%02d/%04d %02d:%02d:%02d\n", 
+            dataHora->tm_mday, dataHora->tm_mon + 1, dataHora->tm_year + 1900,
+            dataHora->tm_hour, dataHora->tm_min, dataHora->tm_sec);
+
+    return logfile;
+}
+
+// Função para escrever no arquivo de log
+void escrever_log(FILE *logfile, char **mat_front, int n, int x, int y) {
+    // Registra a matriz atual
+    fprintf(logfile, "Matriz atual:\n");
+    for (int i = 1; i < n - 1; i++) {
+        for (int j = 1; j < n - 1; j++) {
+            fprintf(logfile, "%c ", mat_front[i][j]);
+        }
+        fprintf(logfile, "\n");
+    }
+
+    // Registra as coordenadas escolhidas
+    fprintf(logfile, "Jogador escolheu as coordenadas: (%d, %d)\n", x, y);
 }
