@@ -179,12 +179,12 @@ void revelarZeros(int x, int y, int n, char** mat_front, int** mat) {
     revelarZeros(x, y + 1, n, mat_front, mat); // Direita
     revelarZeros(x - 1, y - 1, n, mat_front, mat); // Diagonal superior esquerda
     revelarZeros(x - 1, y + 1, n, mat_front, mat); // Diagonal superior direita
-    revelarZeros(x + 1, y - 1, n, mat_front, mat); // Diagonal inferior esquerda
+    revelarZeros(x + 1, y - 1, n, mat_front, mat); // Diagonal fprintf(logfile, "Início do jogo: %02d/%02d/%04d %02d:%02d:%02d\n", inferior esquerda
     revelarZeros(x + 1, y + 1, n, mat_front, mat); // Diagonal inferior direita
 }
 
 FILE* abrir_log() {
-    FILE *logfile = fopen("log.txt", "a");
+    FILE *logfile = fopen("log.txt", "w");
     if (logfile == NULL) {
         printf("Erro ao abrir o arquivo de log.\n");
         exit(1); // Sai do programa se houver erro ao abrir o arquivo
@@ -236,3 +236,23 @@ void registrar_fim_jogo(FILE *logfile, int ganhou) {
 
     fprintf(logfile, "\n");  // Linha em branco para separar entradas no log
 }
+int ganhouOuPerdeu(char **mat_front, int bombas, int n){
+    int contador = 0;
+    for (int i = 1; i < n - 1; i++) {
+        for (int j = 1; j < n - 1; j++) {
+            if(mat_front[i][j] == 'x'){
+                contador++;
+            }       
+        }
+
+    }
+    if(contador == bombas){
+        return 1;
+
+    }else{
+
+        return 0;
+    }
+        
+}
+
