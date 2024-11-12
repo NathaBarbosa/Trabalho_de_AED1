@@ -35,4 +35,5 @@ FILE* abrir_log(); // abre o arquivo log
 
 void escrever_log(FILE *logfile, char **mat_front, int n, int x, int y); //escreve as jogadas no arquivo log.txt
 
+void registrar_fim_jogo(FILE *logfile, int ganhou);
 #endif
