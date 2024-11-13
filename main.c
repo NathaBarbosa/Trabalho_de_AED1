@@ -33,8 +33,8 @@ int main(void) {
 
         if (mat_front[x][y] != 'x') {
             printf("Posicao ja revelada. Tente outra.\n");
-            continue;
-        }
+            
+        }else {
 
         if (mat[x][y] == -1) {
             printf("Game over\n");
@@ -61,6 +61,7 @@ int main(void) {
         }
 
         fprintf(logfile, "Jogador escolheu a coordenada (%d, %d)\n", x, y);
+      }
     }
 
     registrar_fim_jogo(logfile, ganhou);
