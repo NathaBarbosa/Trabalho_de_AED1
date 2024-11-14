@@ -16,12 +16,15 @@ int main(void) {
             conf = seleciona_dificuldade();
         } while (conf == 0);
     }
+   
 
     int bombas = numero_de_Bombas(conf);
     int n = seleciona_Matriz_Back(conf);
     int** mat = constroi_Matriz_Back(n, bombas);
     char** mat_front = matriz_front(n);
     FILE *logfile = abrir_log();
+
+    imprime_front(n, mat_front);
 
     while (flag) {
         printf("Digite as coordenadas x,y (1 a %d): \n", (n - 2));
