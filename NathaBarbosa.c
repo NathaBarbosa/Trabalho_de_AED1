@@ -9,20 +9,22 @@ int main(void) {
     int x, y, ganhou = 0;
     int flag = 1;
     int conf = seleciona_dificuldade();
+    FILE *logfile = abrir_log();
 
     if (conf == 0) { 
         do {
             printf("Por favor, digite uma dificuldade valida\n");
+            config(logfile, conf);
             conf = seleciona_dificuldade();
         } while (conf == 0);
     }
-   
+   config(logfile, conf);
 
     int bombas = numero_de_Bombas(conf);
     int n = seleciona_Matriz_Back(conf);
     int** mat = constroi_Matriz_Back(n, bombas);
     char** mat_front = matriz_front(n);
-    FILE *logfile = abrir_log();
+    
 
     imprime_front(n, mat_front);
 
@@ -32,11 +34,13 @@ int main(void) {
 
         while (((x < 1) || (y < 1)) || ((x > (n - 2)) || (y > (n - 2)))) {
             printf("Coordenada fora do escopo! Digite novamente (1 a %d): \n", (n - 2));
+            jogadaFora(logfile ,x ,y );
             scanf("%d,%d", &x, &y);
         }
 
         if (mat_front[x][y] != 'x') {
             printf("Posicao ja revelada. Tente outra.\n");
+            posicaoRevelada(logfile, x, y);
             
         }else {
 
