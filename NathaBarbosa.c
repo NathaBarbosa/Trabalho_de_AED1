@@ -1,8 +1,9 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "matriz.c"
-#include "log.c"
+#include "matriz.h"
+#include "log.h"
 
 int main(void) {
     int x, y, ganhou = 0;
@@ -59,12 +60,10 @@ int main(void) {
                 ganhou = 1;
             }
         }
-
-        fprintf(logfile, "Jogador escolheu a coordenada (%d, %d)\n", x, y);
       }
     }
 
-    registrar_fim_jogo(logfile, ganhou);
+    registrar_fim_jogo(logfile, ganhou, mat, n);
     libera_matriz_back(n, mat);
     libera_matriz_front(n, mat_front);
     fclose(logfile);
