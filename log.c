@@ -30,7 +30,9 @@ void escrever_log(FILE *logfile, char **mat_front, int n, int x, int y) {
         }
         fprintf(logfile, "\n");
     }
-    fprintf(logfile, "Jogador escolheu a coordenada (%d, %d)\n", x, y);
+
+        fprintf(logfile, "Jogador escolheu a coordenada (%d, %d)\n", x, y);
+    
 }
 
 void registrar_fim_jogo(FILE *logfile, int ganhou, int **mat_back, int n) {
@@ -57,4 +59,29 @@ void registrar_fim_jogo(FILE *logfile, int ganhou, int **mat_back, int n) {
 
     fprintf(logfile, "%s\n", ganhou ? "O jogador ganhou o jogo!" : "O jogador perdeu o jogo!");
     fprintf(logfile, "\n");
+}
+
+void jogadaFora(FILE *logfile,int x, int y){
+
+    fprintf(logfile, "Jogador escolheu uma coordenada fora do escopo: (%d, %d)\n", x, y);
+}
+
+void posicaoRevelada(FILE *logfile,int x, int y){
+
+    fprintf(logfile, "Jogador escolheu uma coordenada ja revelada: (%d, %d)\n", x, y);
+}
+
+void config(FILE *logfile, int conf){
+    if(conf == 0) {
+       fprintf(logfile, "O jogador informou uma dificuldade invaida\n"); 
+
+    }else {
+       if(conf == 1){
+        fprintf(logfile, "O jogador escolheu: Facil\n");
+       }else if(conf == 2){
+        fprintf(logfile, "O jogador escolheu: Medio\n");
+       }else {
+        fprintf(logfile, "O jogador escolheu: Dificil\n");
+       }
+    }
 }
