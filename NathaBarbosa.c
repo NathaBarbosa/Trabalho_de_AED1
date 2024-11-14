@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include "matriz.h"
-#include "log.h"
+#include "matriz.c"
+#include "log.c"
 
 int main(void) {
     int x, y, ganhou = 0;
