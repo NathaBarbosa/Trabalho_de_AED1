@@ -73,7 +73,7 @@ void posicaoRevelada(FILE *logfile,int x, int y){
 
 void config(FILE *logfile, int conf){
     if(conf == 0) {
-       fprintf(logfile, "O jogador informou uma dificuldade invaida\n"); 
+       fprintf(logfile, "O jogador informou uma dificuldade invalida\n"); 
 
     }else {
        if(conf == 1){
