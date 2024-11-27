@@ -24,7 +24,20 @@ int main() {
     printf("Fila antes da ordenação:\n");
     imprimeFila(&fila);
 
-    ordenaFila(&fila);
+    int trocou;
+    do {
+        trocou = 0;
+        No* atual = fila.inicio;
+        while (atual && atual->prox) {
+            if (atual->idade < atual->prox->idade) {
+                int temp = atual->idade;
+                atual->idade = atual->prox->idade;
+                atual->prox->idade = temp;
+                trocou = 1;
+            }
+            atual = atual->prox;
+        }
+    } while (trocou);
 
     printf("Fila após a ordenação:\n");
     imprimeFila(&fila);
