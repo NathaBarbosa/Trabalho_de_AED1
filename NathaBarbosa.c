@@ -1,79 +1,43 @@
+#include "fila.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
-#include "matriz.h"
-#include "log.h"
+#define ARQUIVO "clientes.txt"
 
-int main(void) {
-    int x, y, ganhou = 0;
-    int flag = 1;
-    int conf = seleciona_dificuldade();
-    FILE *logfile = abrir_log();
+int main() {
+    Fila fila;
+    inicializaFila(&fila);
 
-    if (conf == 0) { 
-        do {
-            printf("Por favor, digite uma dificuldade valida\n");
-            config(logfile, conf);
-            conf = seleciona_dificuldade();
-        } while (conf == 0);
-    }
-   config(logfile, conf);
-
-    int bombas = numero_de_Bombas(conf);
-    int n = seleciona_Matriz_Back(conf);
-    int** mat = constroi_Matriz_Back(n, bombas);
-    char** mat_front = matriz_front(n);
-    
-
-    imprime_front(n, mat_front);
-
-    while (flag) {
-        printf("Digite as coordenadas x,y (1 a %d): \n", (n - 2));
-        scanf("%d,%d", &x, &y);
-
-        while (((x < 1) || (y < 1)) || ((x > (n - 2)) || (y > (n - 2)))) {
-            printf("Coordenada fora do escopo! Digite novamente (1 a %d): \n", (n - 2));
-            jogadaFora(logfile ,x ,y );
-            scanf("%d,%d", &x, &y);
-        }
-
-        if (mat_front[x][y] != 'x') {
-            printf("Posicao ja revelada. Tente outra.\n");
-            posicaoRevelada(logfile, x, y);
-            
-        }else {
-
-        if (mat[x][y] == -1) {
-            printf("Game over\n");
-            imprime_gameOver(n, mat);
-            escrever_log(logfile, mat_front, n, x, y);
-            flag = 0;
-            ganhou = 0;
-        } else if (mat[x][y] == 0) {
-            revelarZeros(x, y, n, mat_front, mat);
-            escrever_log(logfile, mat_front, n, x, y);
-            imprime_front(n, mat_front);
-        } else {
-            mat_front[x][y] = mat[x][y] + '0';
-            imprime_front(n, mat_front);
-            escrever_log(logfile, mat_front, n, x, y);
-
-            if (ganhouOuPerdeu(mat_front, bombas, n)) {
-                printf("Parabens, voce eh fera!\n");
-                imprime_gameOver(n, mat);
-                escrever_log(logfile, mat_front, n, x, y);
-                flag = 0;
-                ganhou = 1;
-            }
-        }
-      }
+    // Abrindo o arquivo para leitura
+    FILE* arquivo = fopen(ARQUIVO, "r");
+    if (!arquivo) {
+        printf("Erro ao abrir o arquivo %s.\n", ARQUIVO);
+        return 1;
     }
 
-    registrar_fim_jogo(logfile, ganhou, mat, n);
-    libera_matriz_back(n, mat);
-    libera_matriz_front(n, mat_front);
-    fclose(logfile);
+    // Lendo idades do arquivo e enfileirando
+    int idade;
+    while (fscanf(arquivo, "%d", &idade) != EOF) {
+        enfileira(&fila, idade);
+    }
+    fclose(arquivo);
+
+    // Ordenando a fila
+    printf("Fila antes da ordenação:\n");
+    imprimeFila(&fila);
+
+    ordenaFila(&fila);
+
+    printf("Fila após a ordenação:\n");
+    imprimeFila(&fila);
+
+    // Atendendo os clientes (desenfileirando)
+    printf("Atendendo os clientes:\n");
+    while (!filaVazia(&fila)) {
+        int atendido = desenfileira(&fila);
+        printf("Atendendo cliente com idade: %d\n", atendido);
+    }
+
+    // Liberando a memória
+    liberaFila(&fila);
 
     return 0;
 }
