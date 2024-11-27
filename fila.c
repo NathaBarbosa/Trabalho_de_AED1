@@ -7,7 +7,7 @@ void inicializaFila(Fila* fila) {
     fila->tamanho = 0;
 }
 
-// Insere um elemento no final da fila
+
 void enfileira(Fila* fila, int idade) {
     No* novo = (No*)malloc(sizeof(No));
     if (!novo) {
@@ -25,11 +25,11 @@ void enfileira(Fila* fila, int idade) {
     fila->tamanho++;
 }
 
-// Remove um elemento do início da fila
+
 int desenfileira(Fila* fila) {
     if (filaVazia(fila)) {
         printf("Fila vazia.\n");
-        return -1;
+        return 1;
     }
 
     No* removido = fila->inicio;
@@ -44,39 +44,19 @@ int desenfileira(Fila* fila) {
     return idade;
 }
 
-// Ordena a fila com Bubble Sort (decrescente)
-void ordenaFila(Fila* fila) {
-    if (fila->tamanho < 2) return;
 
-    int trocou;
-    do {
-        trocou = 0;
-        No* atual = fila->inicio;
-        while (atual && atual->prox) {
-            if (atual->idade < atual->prox->idade) {
-                int temp = atual->idade;
-                atual->idade = atual->prox->idade;
-                atual->prox->idade = temp;
-                trocou = 1;
-            }
-            atual = atual->prox;
-        }
-    } while (trocou);
-}
-
-// Verifica se a fila está vazia
 int filaVazia(Fila* fila) {
     return fila->tamanho == 0;
 }
 
-// Libera a memória da fila
+
 void liberaFila(Fila* fila) {
     while (!filaVazia(fila)) {
         desenfileira(fila);
     }
 }
 
-// Imprime os elementos da fila
+
 void imprimeFila(Fila* fila) {
     No* atual = fila->inicio;
     while (atual) {
@@ -84,4 +64,8 @@ void imprimeFila(Fila* fila) {
         atual = atual->prox;
     }
     printf("\n");
+}
+
+void libera_lista(Fila* fila){
+    
 }
