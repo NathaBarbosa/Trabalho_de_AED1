@@ -2,6 +2,23 @@
 
 #define ARQUIVO "clientes.txt"
 
+void bubbleSort(Fila* fila){
+     int trocou;
+    do {
+        trocou = 0;
+        No* atual = fila->inicio;
+        while (atual && atual->prox) {
+            if (atual->idade < atual->prox->idade) {
+                int temp = atual->idade;
+                atual->idade = atual->prox->idade;
+                atual->prox->idade = temp;
+                trocou = 1;
+            }
+            atual = atual->prox;
+        }
+    } while (trocou);
+}
+
 int main() {
     Fila fila;
     inicializaFila(&fila);
@@ -21,32 +38,19 @@ int main() {
     fclose(arquivo);
 
     // Ordenando a fila
-    printf("Fila antes da ordenação:\n");
-    imprimeFila(&fila);
+    
+    bubbleSort(&fila);
 
-    int trocou;
-    do {
-        trocou = 0;
-        No* atual = fila.inicio;
-        while (atual && atual->prox) {
-            if (atual->idade < atual->prox->idade) {
-                int temp = atual->idade;
-                atual->idade = atual->prox->idade;
-                atual->prox->idade = temp;
-                trocou = 1;
-            }
-            atual = atual->prox;
-        }
-    } while (trocou);
+   
 
-    printf("Fila após a ordenação:\n");
+    
     imprimeFila(&fila);
 
     // Atendendo os clientes (desenfileirando)
     printf("Atendendo os clientes:\n");
     while (!filaVazia(&fila)) {
         int atendido = desenfileira(&fila);
-        printf("Atendendo cliente com idade: %d\n", atendido);
+        printf("%d\n", atendido);
     }
 
     // Liberando a memória
