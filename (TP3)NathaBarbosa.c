@@ -19,6 +19,8 @@ void bubbleSort(Fila* fila){
     } while (trocou);
 }
 
+
+
 int main() {
     Fila fila;
     inicializaFila(&fila);
@@ -37,23 +39,22 @@ int main() {
     }
     fclose(arquivo);
 
-    // Ordenando a fila
-    
-    bubbleSort(&fila);
-
-   
-
-    
+    printf("Fila nao ordenada:\n");
     imprimeFila(&fila);
 
-    // Atendendo os clientes (desenfileirando)
+    // Ordenando a fila
+    bubbleSort(&fila);
+    
+    
+
+    // Atendendo os clientes (desenfileirando e liberando memória)
     printf("Atendendo os clientes:\n");
     while (!filaVazia(&fila)) {
         int atendido = desenfileira(&fila);
-        printf("%d\n", atendido);
+        printf("Atendido: %d\n", atendido);
     }
 
-    // Liberando a memória
+    // Liberando memória da fila (garantia final)
     liberaFila(&fila);
 
     return 0;
